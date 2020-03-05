@@ -1,0 +1,48 @@
+<configuration>
+
+    <property resource="ols-logging.properties"/>
+
+    <appender name="ONLINE_STORE_SERVICE_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <file>${/opt/ols:-./}/logs/ols.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${/opt/ols:-./}/logs/ols.log.%d{yyyy-MM-dd}
+            </fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>
+                %d{dd.MM.yyyy HH:mm:ss.SSS} [%thread] %logger{80} %-5level %msg %n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="CONSOLE_APPENDER" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>. %d{dd.MM.yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n
+            </Pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <logger name="org.learn.store" level="${logger.level.org.learn.store:-INFO}" additivity="false">
+        <appender-ref ref="ONLINE_STORE_SERVICE_LOG_FILE"/>
+        <appender-ref ref="CONSOLE_APPENDER"/>
+    </logger>
+
+    <logger name="org.apache.http" level="${logger.level.org.apache.http:-INFO}" additivity="false">
+        <appender-ref ref="ONLINE_STORE_SERVICE_LOG_FILE"/>
+    </logger>
+
+    <logger name="org.springframework" level="${logger.level.org.springframework:-INFO}" additivity="false">
+        <appender-ref ref="ONLINE_STORE_SERVICE_LOG_FILE"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="ONLINE_STORE_SERVICE_LOG_FILE"/>
+    </root>
+</configuration>
